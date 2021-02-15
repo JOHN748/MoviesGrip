@@ -2,6 +2,7 @@
 <?php include ('functions/functions.php'); ?>
 <!-- Session -->
 <?php include ('includes/session.php') ?>
+<!-- Fetch from Database -->
 
 <!-- HTML Start -->
 <!DOCTYPE html>
@@ -33,7 +34,11 @@
         <div class="page-content">
             
             <!-- Movies Slider -->
-            <?php include 'includes/sections/sliders.php'; ?>
+            <?php 
+                if ($slider == 'Active') {
+                    include 'includes/sections/sliders.php';
+                 } 
+            ?>
 
             <!-- Page Container -->
             <div class="container-fluid">
@@ -42,7 +47,41 @@
                 <?php include 'includes/messages.php'; ?>
                 
                 <!-- Content -->
-                <?php include 'includes/sections/recent-movies.php'; ?>
+
+                <!-- Latest Releases -->
+                <?php
+                    if ($latest_releases == 'Active') {
+                        include 'includes/sections/latest-releases.php'; 
+                    } 
+                ?>
+
+                <!-- Popular Downloads -->
+                <?php
+                    if ($popular_downloads == 'Active') {
+                        include 'includes/sections/popular-downloads.php'; 
+                    } 
+                ?>
+
+                <!-- Latest Movies -->
+                <?php
+                    if ($latest_movies == 'Active') {
+                        include 'includes/sections/latest-movies.php'; 
+                    } 
+                ?>
+
+                <!-- Latest Webseries -->
+                <?php
+                    if ($latest_webseries == 'Active') {
+                        include 'includes/sections/latest-webseries.php'; 
+                    } 
+                ?>
+
+                <!-- Latest TV-Shows -->
+                <?php
+                    if ($latest_tvshows == 'Active') {
+                        include 'includes/sections/latest-tvshows.php'; 
+                    } 
+                ?>
 
             </div>
             <!-- End Page Container -->

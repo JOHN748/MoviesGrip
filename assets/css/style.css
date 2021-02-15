@@ -1,3 +1,60 @@
+/* Margins & Paddings */
+
+.mt5{
+  margin-top: 5px;
+}
+
+.mt10{
+  margin-top: 10px;
+}
+
+.mt20{
+  margin-top: 20px;
+}
+
+.mt30{
+  margin-top: 30px;
+}
+
+.mt40{
+  margin-top: 40px;
+}
+
+.pt5{
+  padding-top: 5px;
+}
+
+.pt10{
+  padding-top: 10px;
+}
+
+.pt20{
+  padding-top: 20px;
+}
+
+.pt30{
+  padding-top: 30px;
+}
+
+.pt40{
+  padding-top: 40px;
+}
+
+/* Section-Title */
+
+.section-title .title-left h4{
+  float: left;
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: bold;
+}
+
+.section-title .title-right h5{
+  float: right;
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: bold;
+}
+
+
 /* Sliders */
 
 .movies-slider-item {
@@ -38,7 +95,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 20px;
   position: relative;
   overflow: hidden;
 }
@@ -154,7 +210,7 @@
 }
 
 .card-title {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Titillium Web', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
   color: black;
@@ -179,9 +235,11 @@
 }
 
 .movie-card:hover .card-cover img {
+  /*
   transform: scale(1.06);
   filter: blur(4px);
   -webkit-filter: blur(4px);
+  */
 }
 
 .movie-card:hover .card-cover svg {

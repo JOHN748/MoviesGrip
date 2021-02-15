@@ -203,4 +203,53 @@ function loggedin_user(){
 }
     
 
+// ********** SECTIONS MANAGEMENT ********** //
+
+// Section Details
+
+function section_details(){
+
+	global $db;
+	
+	$query = "SELECT * FROM sections ORDER BY id DESc";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$section_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($section_details as $section_detail) {
+
+		array_push($getdetails, $section_detail);
+
+	}
+
+	return $getdetails;
+}
+
+// Section Details
+
+$query= "SELECT * FROM sections";
+    
+$result = mysqli_query($db, $query);
+
+$section_detail = array();
+
+while($section_details = mysqli_fetch_array($result)){   
+   
+    $section_detail[] = $section_details;
+
+}   
+
+$slider 		   	= $section_detail[0]['status'];
+$latest_releases   	= $section_detail[1]['status'];
+$popular_downloads 	= $section_detail[2]['status'];
+$latest_movies 		= $section_detail[3]['status'];
+$latest_webseries	= $section_detail[4]['status'];
+$latest_tvshows 	= $section_detail[5]['status'];
+$genres 			= $section_detail[6]['status'];
+$languages 			= $section_detail[7]['status'];
+
+
 ?>
