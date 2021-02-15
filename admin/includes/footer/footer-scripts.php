@@ -8,9 +8,6 @@
 <script src="assets/libs/simplebar/simplebar.min.js"></script>
 <!-- NodeWaves -->
 <script src="assets/libs/node-waves/waves.min.js"></script>
-<!-- Slick Carousel -->
-<script src="assets/libs/slick-carousel/js/slick-carousel.js"></script>
-<script src="assets/libs/slick-carousel/js/sliders.js"></script>
 <!-- App JS -->
 <script src="assets/js/app.js"></script>
 
