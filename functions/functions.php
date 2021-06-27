@@ -252,4 +252,31 @@ $genres 			= $section_detail[6]['status'];
 $languages 			= $section_detail[7]['status'];
 
 
+// ********** MOVIES ********** //
+
+// Movies 
+
+function movie_details(){
+
+	global $db;
+	
+	$query = "SELECT * FROM movies WHERE status = 'Active' ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$movie_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($movie_details as $movie_detail) {
+
+		array_push($getdetails, $movie_detail);
+
+	}
+
+	return $getdetails;
+}
+
+
+
 ?>

@@ -16,6 +16,8 @@
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->
     <?php include 'includes/header/header-styles.php'; ?>
+    <!-- Script JS -->
+    <?php include 'includes/header/header-scripts.php'; ?>
 </head>
 
 <!-- Body Section -->

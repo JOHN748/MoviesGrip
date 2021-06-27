@@ -1,19 +1,6 @@
-<div class="latest-movies mt5">
-
-<div class="section-title clearfix pt20">
-	<div class="title-left">
-		<h4>Latest Movies</h4>
-	</div>
-	<div class="title-right">
-		<a href="movies.php">
-			<h5><i class="fas fa-eye"></i> View all</h5>
-		</a>
-	</div>
-</div>
-
 <div class="row row--grid">
 
-	<?php for ($i = 0; $i <= 5; $i++) { ?>
+	<?php for ($i = 0; $i <= 11; $i++) { ?>
 		
 	<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 		<div class="movie-card mt10">
@@ -32,7 +19,5 @@
 	</div>
 
 	<?php } ?>
-
-</div>
 
 </div>

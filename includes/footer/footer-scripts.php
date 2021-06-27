@@ -1,5 +1,3 @@
-<!-- Jquery -->
-<script src="assets/libs/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- MetisMenu -->
@@ -11,6 +9,8 @@
 <!-- Slick Carousel -->
 <script src="assets/libs/slick-carousel/js/slick-carousel.js"></script>
 <script src="assets/libs/slick-carousel/js/sliders.js"></script>
+<!-- Search Filter Controls -->
+<script src="assets/js/filter-controls.js"></script>
 <!-- App JS -->
 <script src="assets/js/app.js"></script>
 

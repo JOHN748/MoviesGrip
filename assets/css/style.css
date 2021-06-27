@@ -265,3 +265,16 @@
   opacity: 1;
   transform: scale(1);
 }
+
+/* Pagination */
+
+#pagingControls{
+  margin-top: 20px;
+  text-align: center;
+}
+
+#showingInfo{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
