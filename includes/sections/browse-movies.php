@@ -11,33 +11,62 @@
  <div class="col-3">
     <select class="form-control">
        <option value="all">Quality</option>
+       <option value="360p">360p</option>
+       <option value="480p">480p</option>
        <option value="720p">720p</option>
        <option value="1080p">1080p</option>
        <option value="2160p">2160p</option>
+       <option value="3D">3D</option>
     </select>
  </div>
  <div class="col-3">
     <select class="form-control">
        <option value="all">Genre</option>
-       <option value="action">Action</option>
-       <option value="thriller">Thriller</option>
-       <option value="drama">Drama</option>
+       <option value="Action">Action</option>
+       <option value="Adventure">Adventure</option>
+       <option value="Animation">Animation</option>
+       <option value="Biography">Biography</option>
+       <option value="Comedy">Comedy</option>
+       <option value="Crime">Crime</option>
+       <option value="Documentary">Documentary</option>
+       <option value="Drama">Drama</option>
+       <option value="Family">Family</option>
+       <option value="Fantasy">Fantasy</option>
+       <option value="Film-Noir">Film-Noir</option>
+       <option value="History">History</option>
+       <option value="Horror">Horror</option>
+       <option value="Musical">Musical</option>
+       <option value="Mystery">Mystery</option>
+       <option value="Romance">Romance</option>
+       <option value="Sci-Fi">Sci-Fi</option>
+       <option value="Sport">Sport</option>
+       <option value="Thriller">Thriller</option>
+       <option value="War">War</option>
     </select>
  </div>
  <div class="col-3">
     <select class="form-control">
        <option value="all">Language</option>
-       <option value="tamil">tamil</option>
+       <option value="tamil">Tamil</option>
+       <option value="telugu">Telugu</option>
+       <option value="malayalam">Hindi</option>
+       <option value="tamil">Malayalam</option>
+       <option value="kannada">kannada</option>
        <option value="english">English</option>
     </select>
  </div>
  <div class="col-3">
     <select class="form-control">
        <option value="all">Rating</option>
-       <option value="9">9</option>
-       <option value="8">8</option>
-       <option value="7">7</option>
-       <option value="6">6</option>
+       <option value="9">9+</option>
+       <option value="8">8+</option>
+       <option value="7">7+</option>
+       <option value="6">6+</option>
+       <option value="5">5+</option>
+       <option value="4">4+</option>
+       <option value="3">3+</option>
+       <option value="2">2+</option>
+       <option value="1">1+</option>
     </select>
  </div>
 </div>
