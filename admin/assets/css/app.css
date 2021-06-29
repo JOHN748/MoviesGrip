@@ -1271,6 +1271,133 @@ body[data-sidebar="dark"] .menu-title {
     background-color: #fff;
 }
 
+/* CSS Switch */
+input[switch] {
+    display: none;
+}
+
+input[switch] + label {
+    font-size: 1em;
+    line-height: 1;
+    width: 56px;
+    height: 24px;
+    background-color: #ced4da;
+    background-image: none;
+    border-radius: 2rem;
+    padding: 0.16667rem;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    font-weight: 500;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+input[switch] + label:before {
+    color: #343a40;
+    content: attr(data-off-label);
+    display: block;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 21px;
+    position: absolute;
+    right: 1px;
+    margin: 3px;
+    top: -2px;
+    text-align: center;
+    min-width: 1.66667rem;
+    overflow: hidden;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+input[switch] + label:after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    background-color: #eff2f7;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 2rem;
+    height: 20px;
+    width: 20px;
+    top: 2px;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+input[switch]:checked + label {
+    background-color: #556ee6;
+}
+
+input[switch]:checked + label {
+    background-color: #556ee6;
+}
+
+input[switch]:checked + label:before {
+    color: #fff;
+    content: attr(data-on-label);
+    right: auto;
+    left: 3px;
+}
+
+input[switch]:checked + label:after {
+    left: 33px;
+    background-color: #eff2f7;
+}
+
+input[switch="bool"] + label {
+    background-color: #f46a6a;
+}
+
+input[switch="bool"] + label:before, input[switch="bool"]:checked + label:before,
+input[switch="default"]:checked + label:before {
+    color: #fff;
+}
+
+input[switch="bool"]:checked + label {
+    background-color: #34c38f;
+}
+
+input[switch="default"]:checked + label {
+    background-color: #a2a2a2;
+}
+
+input[switch="primary"]:checked + label {
+    background-color: #556ee6;
+}
+
+input[switch="success"]:checked + label {
+    background-color: #34c38f;
+}
+
+input[switch="info"]:checked + label {
+    background-color: #50a5f1;
+}
+
+input[switch="warning"]:checked + label {
+    background-color: #f1b44c;
+}
+
+input[switch="danger"]:checked + label {
+    background-color: #f46a6a;
+}
+
+input[switch="dark"]:checked + label {
+    background-color: #343a40;
+}
+
+.square-switch {
+    margin-right: 7px;
+}
+
+.square-switch input[switch] + label, .square-switch input[switch] + label:after {
+    border-radius: 4px;
+}
+
+
 /* Simple Bar */
 
 [data-simplebar] {

@@ -283,8 +283,8 @@
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <div class="square-switch">
-                                        <input type="hidden" name="check" value="0"/>
-                                        <input type="checkbox" id="square-switch3" switch="bool" name="check" value="1" checked="">
+                                        <input type="hidden" name="check" value="Inactive"/>
+                                        <input type="checkbox" id="square-switch3" switch="bool" name="check" value="Active" checked="">
                                         <label for="square-switch3" data-on-label="Yes" data-off-label="No"></label>
                                     </div>
                                 </div>
