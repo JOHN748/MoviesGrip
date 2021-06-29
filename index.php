@@ -11,7 +11,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>Movies Biz</title>
+    <title>Movies Bliz</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->

@@ -267,7 +267,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="#">Movies</a></li>
-                        <li><a href="#">Add Movies</a></li>
+                        <li><a href="add-movies.php">Add Movies</a></li>
                         <li><a href="#">Manage Movies</a></li>
                     </ul>
                 </li>

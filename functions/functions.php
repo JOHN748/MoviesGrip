@@ -2,7 +2,7 @@
 
 session_start();
 
-$db = mysqli_connect('localhost', 'root', '', 'moviesbiz');
+$db = mysqli_connect('localhost', 'root', '', 'moviesgrip');
 
 // ********** REGISTER USER ********** //
 
@@ -277,6 +277,118 @@ function movie_details(){
 	return $getdetails;
 }
 
+
+// Add Movie
+
+$title = $genre = $language = $rating = $quality = $year = $synopsis = $image = $gallery_images = 
+$uploaded_by = $status = "";
+
+$title_err = $img_err = $gimg_err = $err = "";
+
+if (isset($_POST['add_movie'])) {
+	add_movie();
+}
+
+function add_movie(){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
+	$uploaded_by, $status, $title_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$language     = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$quality      = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM movies WHERE title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "Movie with this name is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM movies WHERE image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+
+	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+		
+		if(is_array($gallery_images)){ 
+
+	    $gallery_image = implode(',',$gallery_images);       
+
+		$query = "INSERT INTO movies (title, genre, language, rating, quality, year, synopsis, 
+		          image, gallery_image, uploaded_by, uploaded_on, status) 
+				  
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/movies/$title/")) {
+			    mkdir("../assets/images/movies/$title/");
+			}
+			
+			move_uploaded_file($temp_name, "../assets/images/movies/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/movies/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="Movie has been successfully Uploaded!.";	
+			header('location: manage-movies.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Uploading Movie";
+				header('location: manage-movies.php');
+			}
+		}
+	}
+}
 
 
 ?>
