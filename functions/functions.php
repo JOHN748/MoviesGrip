@@ -281,7 +281,7 @@ function movie_details(){
 // Add Movie
 
 $title = $genre = $language = $rating = $quality = $year = $synopsis = $image = $gallery_images = 
-$uploaded_by = $status = "";
+$uploaded_by = $status = $languages = $qualities = "";
 
 $title_err = $img_err = $gimg_err = $err = "";
 
@@ -292,13 +292,13 @@ if (isset($_POST['add_movie'])) {
 function add_movie(){
 	
 	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
-	$uploaded_by, $status, $title_err, $img_err, $gimg_err, $err;
+	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
 	$genre  	  = $_POST['genre'];
-	$language     = $_POST['language'];
+	$languages    = $_POST['language'];
 	$rating 	  = $_POST['rating'];
-	$quality      = $_POST['quality'];
+	$qualities    = $_POST['quality'];
 	$year 		  = $_POST['year'];
 	$synopsis 	  = $_POST['synopsis'];
 	$uploaded_by  = $_SESSION['user']['username'];
@@ -351,9 +351,11 @@ function add_movie(){
 
 	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
 		
-		if(is_array($gallery_images)){ 
+		if(is_array($gallery_images)) { 
 
-	    $gallery_image = implode(',',$gallery_images);       
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
 
 		$query = "INSERT INTO movies (title, genre, language, rating, quality, year, synopsis, 
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
@@ -383,12 +385,305 @@ function add_movie(){
 			header('location: manage-movies.php');
 
 			}else{
-				$_SESSION['error'] ="Error occured in Uploading Movie";
+				$_SESSION['error'] ="Error occured in Query Execution";
 				header('location: manage-movies.php');
 			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-movies.php');
 		}
+	}else{
+		$_SESSION['error'] ="Error occured in Header Function";
+		header('location: manage-movies.php');
 	}
 }
+
+
+// ********** WEBSERIES ********** //
+
+// Webseries 
+
+function series_details(){
+
+	global $db;
+	
+	$query = "SELECT * FROM webseries WHERE status = 'Active' ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$series_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($series_details as $series_detail) {
+
+		array_push($getdetails, $series_detail);
+
+	}
+
+	return $getdetails;
+}
+
+
+// Add Series
+
+if (isset($_POST['add_series'])) {
+	add_series();
+}
+
+function add_series(){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$languages    = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$qualities    = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM webseries WHERE title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "Series with this name is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM webseries WHERE image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+
+	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+		
+		if(is_array($gallery_images)) { 
+
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
+
+		$query = "INSERT INTO webseries (title, genre, language, rating, quality, year, synopsis, 
+		          image, gallery_image, uploaded_by, uploaded_on, status) 
+				  
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/webseries/$title/")) {
+			    mkdir("../assets/images/webseries/$title/");
+			}
+			
+			move_uploaded_file($temp_name, "../assets/images/webseries/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/webseries/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="Webseries has been successfully Uploaded!.";	
+			header('location: manage-webseries.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Query Execution";
+				header('location: manage-webseries.php');
+			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-webseries.php');
+		}
+	}else{
+		$_SESSION['error'] ="Error occured in Header Function";
+		header('location: manage-webseries.php');
+	}
+}
+
+
+
+// ********** TV-Shows ********** //
+
+// Tv-Shows 
+
+function show_details(){
+
+	global $db;
+	
+	$query = "SELECT * FROM tvshows WHERE status = 'Active' ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$show_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($show_details as $show_detail) {
+
+		array_push($getdetails, $show_detail);
+
+	}
+
+	return $getdetails;
+}
+
+
+// Add TV-Show
+
+if (isset($_POST['add_show'])) {
+	add_show();
+}
+
+function add_show(){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$languages    = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$qualities    = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM tvshows WHERE title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "TV-Show with this name is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM tvshows WHERE image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+
+	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+		
+		if(is_array($gallery_images)) { 
+
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
+
+		$query = "INSERT INTO tvshows (title, genre, language, rating, quality, year, synopsis, 
+		          image, gallery_image, uploaded_by, uploaded_on, status) 
+				  
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/tvshows/$title/")) {
+			    mkdir("../assets/images/tvshows/$title/");
+			}
+			
+			move_uploaded_file($temp_name, "../assets/images/tvshows/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/tvshows/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="TV-Show has been successfully Uploaded!.";	
+			header('location: manage-tvshows.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Query Execution";
+				header('location: manage-tvshows.php');
+			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-tvshows.php');
+		}
+	}else{
+		$_SESSION['error'] ="Error occured in Header Function";
+		header('location: manage-tvshows.php');
+	}
+}
+
+
 
 
 ?>

@@ -3,7 +3,7 @@
 <!-- Session -->
 <?php include ('includes/session.php') ?>
 <!-- Fetch from Database -->
-<?php $movie_details = movie_details(); ?>
+<?php $series_details = series_details(); ?>
 
 <!-- HTML Start -->
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>Movies</title>
+    <title>Webseries</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->
@@ -41,8 +41,8 @@
 
                 <!-- Messages -->
                 <?php include 'includes/messages.php'; ?>
-                <!-- Movies -->
-                <?php include 'includes/sections/movies.php'; ?>                
+                <!-- Webseries -->
+                <?php include 'includes/sections/webseries.php'; ?>                
 
             </div>
 

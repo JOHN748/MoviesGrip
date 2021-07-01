@@ -11,7 +11,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>Add Movies</title>
+    <title>Add TV-Shows</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->
@@ -44,12 +44,12 @@
                 <div class="row pt-4">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0 font-size-18">Add Movie</h4>
+                            <h4 class="mb-0 font-size-18">Add TV-Shows</h4>
                             <!-- Breadcrumb -->
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Add Movie</li>
+                                    <li class="breadcrumb-item active">Add TV-Shows</li>
                                 </ol>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <form class="form-horizontal" method="post" action="add-movies.php" enctype="multipart/form-data">
+                        <form class="form-horizontal" method="post" action="add-tvshows.php" enctype="multipart/form-data">
                             
                             <div class="card">
                                 <div class="card-body card-block">
@@ -76,20 +76,20 @@
                                                 </div>
                                             </div>
                                             <div class="media-body overflow-hidden">
-                                                <h5 class="font-size-16 mb-1">Movie Header</h5>
+                                                <h5 class="font-size-16 mb-1">Show Header</h5>
                                             </div>
                                         </div>
                                     </div>
                                     
                                 <div class="row mt-2">
                                     <div class="col-md-2 text-center">
-                                        <img id="preview-image" class="img-prev rounded" src="#" alt="Upload" onerror=this.src="../assets/images/movies/no_image.png" />
+                                        <img id="preview-image" class="img-prev rounded" src="#" alt="Upload" onerror=this.src="../assets/images/tvshows/no_image.png" />
                                     </div>
                                     <div class="col-md-10">
                             
                                         <div class="form-group mt-3 mb-4">
-                                            <label class=" form-control-label">Movie Name</label>
-                                            <input type="text" name="title" placeholder="Enter the Movie Name" class="form-control" value="" required>
+                                            <label class=" form-control-label">Show Name</label>
+                                            <input type="text" name="title" placeholder="Enter the Show Name" class="form-control" value="" required>
                                             <span class="text-danger"><?php echo $title_err; ?></span>
                                         </div>
 
@@ -138,7 +138,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body overflow-hidden">
-                                                <h5 class="font-size-16 mb-1">Movie Info</h5>
+                                                <h5 class="font-size-16 mb-1">Show Info</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@
                                     <div class="col-12">
                                         <div class="form-group mt-3 mb-3">
                                             <label class=" form-control-label">Synopsis</label>
-                                            <textarea name="synopsis" class="form-control" placeholder="Write the Movie Synopsis..." rows="7" required><?php echo $synopsis ?></textarea>
+                                            <textarea name="synopsis" class="form-control" placeholder="Write the Show Synopsis..." rows="7" required><?php echo $synopsis ?></textarea>
                                         </div>
                                     </div>
 
@@ -292,8 +292,8 @@
                                 <div class="col-md-6">
                                     <div class="float-right">
                                         <a href="#" onclick="history.go(-1)" class="btn btn-danger">Cancel</a>
-                                        <button type="submit" name="add_movie" class="btn btn-primary">
-                                            Add Movie
+                                        <button type="submit" name="add_show" class="btn btn-primary">
+                                            Add Show
                                         </button>
                                     </div>
                                 </div>
