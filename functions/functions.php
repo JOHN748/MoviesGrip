@@ -277,13 +277,20 @@ function movie_details(){
 	return $getdetails;
 }
 
+// Make Slug
+
+function makeSlug(String $string){
+	$string = strtolower($string);
+	$slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+	return $slug;
+}
 
 // Add Movie
 
-$title = $genre = $language = $rating = $quality = $year = $synopsis = $image = $gallery_images = 
+$title = $genre = $language = $rating = $quality = $year = $synopsis = $slug = $image = $gallery_images = 
 $uploaded_by = $status = $languages = $qualities = "";
 
-$title_err = $img_err = $gimg_err = $err = "";
+$title_err = $slug_err = $img_err = $gimg_err = $err = "";
 
 if (isset($_POST['add_movie'])) {
 	add_movie();
@@ -291,8 +298,8 @@ if (isset($_POST['add_movie'])) {
 
 function add_movie(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
-	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
 	$genre  	  = $_POST['genre'];
@@ -301,9 +308,12 @@ function add_movie(){
 	$qualities    = $_POST['quality'];
 	$year 		  = $_POST['year'];
 	$synopsis 	  = $_POST['synopsis'];
+	$slug 		  = $_POST['slug'];
 	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
 	
+	$slug = makeSlug($slug);
+
 	$image  =  $_FILES['image']['name'];
 	$temp_name =  $_FILES['image']['tmp_name'];
 
@@ -315,6 +325,14 @@ function add_movie(){
 		$results = mysqli_query($db, $query);
 		if (mysqli_num_rows($results) == 1) { 
 			$title_err = "Movie with this name is already exists";
+		}
+	}
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM movies WHERE slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Movie with this Slug is already exists";
 		}
 	}
 
@@ -349,7 +367,7 @@ function add_movie(){
 	}
 
 
-	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+	if (empty($title_err) && empty($slug_err) && empty($img_err) && empty($gimg_err)) {
 		
 		if(is_array($gallery_images)) { 
 
@@ -357,10 +375,10 @@ function add_movie(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO movies (title, genre, language, rating, quality, year, synopsis, 
+		$query = "INSERT INTO movies (title, genre, language, rating, quality, year, synopsis, slug,
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){
@@ -433,8 +451,8 @@ if (isset($_POST['add_series'])) {
 
 function add_series(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
-	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
 	$genre  	  = $_POST['genre'];
@@ -443,8 +461,11 @@ function add_series(){
 	$qualities    = $_POST['quality'];
 	$year 		  = $_POST['year'];
 	$synopsis 	  = $_POST['synopsis'];
-	$uploaded_by  = $_SESSION['user']['username'];
+	$slug 		  = $_POST['slug'];
+ 	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
+
+	$slug = makeSlug($slug);
 	
 	$image  =  $_FILES['image']['name'];
 	$temp_name =  $_FILES['image']['tmp_name'];
@@ -457,6 +478,14 @@ function add_series(){
 		$results = mysqli_query($db, $query);
 		if (mysqli_num_rows($results) == 1) { 
 			$title_err = "Series with this name is already exists";
+		}
+	}
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM webseries WHERE slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Webseries with this Slug is already exists";
 		}
 	}
 
@@ -491,7 +520,7 @@ function add_series(){
 	}
 
 
-	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+	if (empty($title_err) && empty($slug_err) && empty($img_err) && empty($gimg_err)) {
 		
 		if(is_array($gallery_images)) { 
 
@@ -499,10 +528,10 @@ function add_series(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO webseries (title, genre, language, rating, quality, year, synopsis, 
+		$query = "INSERT INTO webseries (title, genre, language, rating, quality, year, synopsis, slug, 
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){
@@ -576,8 +605,8 @@ if (isset($_POST['add_show'])) {
 
 function add_show(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $image, $gallery_images, 
-	$uploaded_by, $status, $languages, $qualities, $title_err, $img_err, $gimg_err, $err;
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
 	$genre  	  = $_POST['genre'];
@@ -586,8 +615,11 @@ function add_show(){
 	$qualities    = $_POST['quality'];
 	$year 		  = $_POST['year'];
 	$synopsis 	  = $_POST['synopsis'];
+	$slug 		  = $_POST['slug'];
 	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
+
+	$slug = makeSlug($slug);
 	
 	$image  =  $_FILES['image']['name'];
 	$temp_name =  $_FILES['image']['tmp_name'];
@@ -600,6 +632,14 @@ function add_show(){
 		$results = mysqli_query($db, $query);
 		if (mysqli_num_rows($results) == 1) { 
 			$title_err = "TV-Show with this name is already exists";
+		}
+	}
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM tvshows WHERE slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Tv-Show with this Slug is already exists";
 		}
 	}
 
@@ -634,7 +674,7 @@ function add_show(){
 	}
 
 
-	if (empty($title_err) && empty($img_err) && empty($gimg_err)) {
+	if (empty($title_err) && empty($slug_err) && empty($img_err) && empty($gimg_err)) {
 		
 		if(is_array($gallery_images)) { 
 
@@ -642,10 +682,10 @@ function add_show(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO tvshows (title, genre, language, rating, quality, year, synopsis, 
+		$query = "INSERT INTO tvshows (title, genre, language, rating, quality, year, synopsis, slug,
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis',
+				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){

@@ -271,6 +271,11 @@
                                                     <span class="text-danger"><?php echo $gimg_err; ?></span>
                                                     <span class="text-danger"></span>
                                                 </div>
+                                                <div class="form-group mt-3 mb-4">
+                                                    <label class=" form-control-label">Tv-Show Slug</label>
+                                                    <input type="text" name="slug" placeholder="Enter the tvshow slug" class="form-control" value="" required>
+                                                    <span class="text-danger"><?php echo $slug_err; ?></span>
+                                                </div>
                                             </div>
                                         </div>
 

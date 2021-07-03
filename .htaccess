@@ -1,2 +1,17 @@
-# ErrorDocument 404 http://localhost/moviesgrip/404.php
+# 404 page
+ErrorDocument 404 http://localhost/moviesgrip/404.php
+
+RewriteEngine On
+RewriteBase /moviesgrip/
+
+# Extension Removal
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php
+
+# URL Rewrite
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^movies/(.+)$ movie-template.php?id=$1 [L]
+RewriteRule ^webseries/(.+)$ webseries-template.php?id=$1 [L]
+RewriteRule ^tvshows/(.+)$ tvshow-template.php?id=$1 [L]
 
