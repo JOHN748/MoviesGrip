@@ -11,7 +11,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>Add Movies</title>
+    <title>Add Movie</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->

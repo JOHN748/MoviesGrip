@@ -77,7 +77,7 @@ function register(){
 		move_uploaded_file($temp_name1, "user/assets/images/user/$user_image");  
 		mysqli_query($db, $query);
 		$_SESSION['message']  = "Registered Successfully!";
-		header('location: index.php');
+		header('location: index');
 
 	}
 
@@ -128,18 +128,18 @@ function login(){
 				
 				$_SESSION['user'] = $logged_in_user;
 				$_SESSION['message']  = "Logged in Successfully";
-				header('location: index.php');		  
+				header('location: index');		  
 			}else if ($logged_in_user['role'] == 'Author' && $logged_in_user['status'] == 1) {
 
 				$_SESSION['user'] = $logged_in_user;
 				$_SESSION['message']  = "Logged in Successfully";
-				header('location: index.php');		  
+				header('location: index');		  
 			}
 			else if ($logged_in_user['role'] == 'User' && $logged_in_user['status'] == 1) {
 				
 				$_SESSION['user'] = $logged_in_user;
 				$_SESSION['message']  = "Logged in Successfully";
-				header('location: index.php');
+				header('location: index');
 			}else{
 				$user_err = "Your Account is Inactive";				
 			}

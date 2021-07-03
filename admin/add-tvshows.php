@@ -11,7 +11,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>Add TV-Shows</title>
+    <title>Add TV-Show</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->

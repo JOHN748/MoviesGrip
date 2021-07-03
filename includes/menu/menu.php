@@ -225,11 +225,11 @@
                     <?php  if (isset($_SESSION['user'])){ ?>
 
                         <?php if($_SESSION['user']['role'] == 'Admin') { ?>
-                            <a class="dropdown-item" href="admin/index.php"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                            <a class="dropdown-item" href="admin/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
                         <?php }elseif($_SESSION['user']['role'] == 'Author') { ?>
-                            <a class="dropdown-item" href="author/index.php"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                            <a class="dropdown-item" href="author/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
                         <?php }elseif($_SESSION['user']['role'] == 'User') { ?>
-                            <a class="dropdown-item" href="user/index.php"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                            <a class="dropdown-item" href="user/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
                         <?php } ?>
 
                     <?php } ?>
@@ -242,7 +242,7 @@
                     <?php endif ?>
 
                     <?php  if (!isset($_SESSION['user'])) : ?>
-                    <a class="dropdown-item text-danger" href="login.php"><i class="fas fa-sign-in-alt mr-2 text-danger"></i>Login</a>
+                    <a class="dropdown-item text-danger" href="login"><i class="fas fa-sign-in-alt mr-2 text-danger"></i>Login</a>
                     <?php endif ?>
 
                 </div>

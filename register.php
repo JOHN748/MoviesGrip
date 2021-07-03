@@ -27,7 +27,7 @@
                         <div class="col-7">
                             <div class="text-primary p-4">
                                 <h5 style="color: #436BB3; font-weight: bold;">Register Now</h5>
-                                <p>Create Your New MoviesBiz Account Now.</p>
+                                <p>Create Your New MoviesGrip Account Now.</p>
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="mt-4 text-center">
-                                <p class="mb-0">By registering you agree to the MoviesBiz <a href="#" class="text-primary">Terms of Use</a></p>
+                                <p class="mb-0">By registering you agree to the MoviesGrip <a href="#" class="text-primary">Terms of Use</a></p>
                             </div>
                         </form>
                     </div>
@@ -87,7 +87,7 @@
             <div class="mt-4 text-center">
 
                 <div>
-                    <p>Already have an account ? <a href="login.php" class="font-weight-medium text-primary">
+                    <p>Already have an account ? <a href="login" class="font-weight-medium text-primary">
                             Login</a></p>
                     <p>Join Now <i class="mdi mdi-heart text-danger"></i> And Get an Exclusive Updates!</p>
                 </div>

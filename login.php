@@ -27,7 +27,7 @@
                         <div class="col-7">
                             <div class="text-primary p-4">
                                 <h5 style="color: #436BB3; font-weight: bold;">Happy to See You Again!</h5>
-                                <p>Log in to MoviesBiz.</p>
+                                <p>Log in to MoviesGrip.</p>
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
@@ -78,7 +78,7 @@
             </div>
             <div class="mt-4 text-center">
                 <div>
-                    <p>Don't have an account ? <a href="register.php" class="font-weight-medium text-primary">
+                    <p>Don't have an account ? <a href="register" class="font-weight-medium text-primary">
                             Regsiter now </a></p>
                     <p>Join Now <i class="mdi mdi-heart text-danger"></i> And get an Exclusive Updates!</p>
                 </div>

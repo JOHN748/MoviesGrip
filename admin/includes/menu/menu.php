@@ -266,9 +266,9 @@
                         <span>Movies</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="../movies.php">Movies</a></li>
-                        <li><a href="add-movies.php">Add Movies</a></li>
-                        <li><a href="manage-movies.php">Manage Movies</a></li>
+                        <li><a href="../movies">Movies</a></li>
+                        <li><a href="add-movies">Add Movies</a></li>
+                        <li><a href="manage-movies">Manage Movies</a></li>
                     </ul>
                 </li>
 
@@ -278,9 +278,9 @@
                         <span>Web-Series</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="../webseires.php">Web-Series</a></li>
-                        <li><a href="add-webseries.php">Add WebSeries</a></li>
-                        <li><a href="manage-webseries.php">Manage WebSeries</a></li>
+                        <li><a href="../webseries">Web-Series</a></li>
+                        <li><a href="add-webseries">Add WebSeries</a></li>
+                        <li><a href="manage-webseries">Manage WebSeries</a></li>
                     </ul>
                 </li>
 
@@ -290,9 +290,9 @@
                         <span>TV-Shows</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="../tvshows.php">TV-Shows</a></li>
-                        <li><a href="add-tvshows.php">Add TV-Shows</a></li>
-                        <li><a href="manage-tvshows.php">Manage TV-Shows</a></li>
+                        <li><a href="../tvshows">TV-Shows</a></li>
+                        <li><a href="add-tvshows">Add TV-Shows</a></li>
+                        <li><a href="manage-tvshows">Manage TV-Shows</a></li>
                     </ul>
                 </li>
 
