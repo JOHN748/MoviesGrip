@@ -4,6 +4,8 @@ session_start();
 
 $db = mysqli_connect('localhost', 'root', '', 'moviesgrip');
 
+// $db = mysqli_connect('localhost', 'u723392212_moviesgrip', 'Anlogkamjohn@7480', 'u723392212_moviesgrip');
+
 // ********** REGISTER USER ********** //
 
 // Register User
