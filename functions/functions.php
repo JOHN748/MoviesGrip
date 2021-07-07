@@ -565,7 +565,6 @@ function movie_delete($delete_movie, $delete_image){
 
 
 
-
 // ********** WEBSERIES ********** //
 
 // Webseries 
