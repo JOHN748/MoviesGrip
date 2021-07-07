@@ -76,8 +76,8 @@ function register(){
 
 		move_uploaded_file($temp_name1, "user/assets/images/user/$user_image");  
 		mysqli_query($db, $query);
-		$_SESSION['message']  = "Registered Successfully!";
-		header('location: index');
+		$_SESSION['message']  = "Registered Successfully! Login with your User Credentials.";
+		header('location: login');
 
 	}
 
@@ -129,7 +129,7 @@ function login(){
 				$_SESSION['user'] = $logged_in_user;
 				$_SESSION['message']  = "Logged in Successfully";
 				header('location: index');		  
-			}else if ($logged_in_user['role'] == 'Author' && $logged_in_user['status'] == 1) {
+			}else if ($logged_in_user['role'] == 'Moderator' && $logged_in_user['status'] == 1) {
 
 				$_SESSION['user'] = $logged_in_user;
 				$_SESSION['message']  = "Logged in Successfully";
@@ -161,9 +161,9 @@ function isAdmin(){
 	}
 }
 
-function isAuthor(){
+function isModerator(){
 	
-	if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'Author' ) {
+	if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'Moderator' ) {
 		return true;
 	}else{
 		return false;
@@ -252,6 +252,31 @@ $genres 			= $section_detail[6]['status'];
 $languages 			= $section_detail[7]['status'];
 
 
+// ********** ESSENTIAL FUNCTIONS ********* //
+
+// Remove Directory
+
+function Remove($dir) {
+    $structure = glob(rtrim($dir, "/").'/*');
+    if (is_array($structure)) {
+        foreach($structure as $file) {
+            if (is_dir($file)) Remove($file);
+            elseif (is_file($file)) unlink($file);
+        }
+    }
+    rmdir($dir);
+}
+
+
+// Make Slug
+
+function makeSlug(String $string){
+	$string = strtolower($string);
+	$slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+	return $slug;
+}
+
+
 // ********** MOVIES ********** //
 
 // Movies 
@@ -275,15 +300,32 @@ function movie_details(){
 	}
 
 	return $getdetails;
-}
+} 
 
-// Make Slug
 
-function makeSlug(String $string){
-	$string = strtolower($string);
-	$slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
-	return $slug;
-}
+// Manage Movies 
+
+function manage_movies(){
+
+	global $db;
+	
+	$query = "SELECT * FROM movies ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$manage_movies = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($manage_movies as $manage_movie) {
+
+		array_push($getdetails, $manage_movie);
+
+	}
+
+	return $getdetails;
+} 
+
 
 // Add Movie
 
@@ -415,6 +457,113 @@ function add_movie(){
 		header('location: manage-movies.php');
 	}
 }
+
+
+// Publish & Unpublish Movie
+
+	if (isset($_POST['publish'])) {
+		$status = $_POST['status'];
+		togglePublish($status);
+		$_SESSION['success'] = $status;
+	}else if (isset($_POST['unpublish'])) {
+		$status = $_POST['status'];
+		toggleUnpublish($status);
+		$_SESSION['success'] = $status;
+	}
+
+
+// Publish Movie
+
+function toggleUnpublish($status)
+{
+	global $db;
+	$sql = "UPDATE movies SET status = 'Inactive' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'Movies Successfully Unpublished';
+		header("location: manage-movies.php");
+		exit(0);
+	}
+}
+
+
+// Unpublish Movie
+
+function togglePublish($status)
+{
+	global $db;
+	$sql = "UPDATE movies SET status= 'Active' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'Movie Successfully Published';
+		header("location: manage-movies.php");
+		exit(0);
+	}
+}
+
+
+// Multi Delete Movie
+
+error_reporting(0);
+
+if (isset($_POST["multi-m-delete"])) {
+    
+	if (!empty($_POST['multi-m-delete'])) {
+	    if (count($_POST["ids"]) > 0 ) {
+
+	        $imgs = $_POST["imgs"];
+	        $all  = implode(",", $_POST["ids"]);
+
+	        if(mysqli_query($db,"DELETE FROM movies WHERE id in ($all)")) {
+	        	foreach ($imgs as $img) {
+	        		Remove('../assets/images/movies/'.$img.'/');
+	        	}
+	            $_SESSION['success'] ="Movie has been deleted successfully";
+	        } else {
+	            $_SESSION['success'] ="Error while deleting. Please Try again."; 
+	        }
+	    }
+    }else{
+    	$_SESSION['error'] = "You need to select atleast one checkbox to delete!";
+    }
+}  
+
+// Single Delete Product
+
+if(isset($_POST['single-m-delete'])){
+    $delete_movie = $_POST['delete-movie'];
+    $delete_image = $_POST['delete-image'];
+    movie_delete($delete_movie, $delete_image);
+}
+
+function movie_delete($delete_movie, $delete_image){
+    
+    global $db;
+
+    if(mysqli_query($db, "DELETE FROM movies WHERE id = $delete_movie")){
+    	Remove('../assets/images/movies/'.$delete_image.'/');
+        $_SESSION['success'] = "Movie has been deleted successfully";
+    }else{
+        $_SESSION['success'] ="Something went wrong, Try again";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ********** WEBSERIES ********** //

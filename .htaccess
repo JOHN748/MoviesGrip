@@ -1,8 +1,12 @@
 # 404 page
-ErrorDocument 404 http://localhost/moviesgrip/404.php
+#ErrorDocument 404 http://localhost/moviesgrip/404.php
 
 RewriteEngine On
 RewriteBase /moviesgrip/
+
+# Index Removal
+RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
+RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
 
 # Extension Removal
 RewriteCond %{REQUEST_FILENAME}\.php -f
@@ -14,4 +18,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^movies/(.+)$ movie-template.php?id=$1 [L]
 RewriteRule ^webseries/(.+)$ webseries-template.php?id=$1 [L]
 RewriteRule ^tvshows/(.+)$ tvshow-template.php?id=$1 [L]
+
+###Newly added rule here, where considering that your edit-post.php is present inside admin folder.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admin/edit-movie/(.+)/?$ admin/edit-movie.php?id=$1 [L]
 

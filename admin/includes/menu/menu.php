@@ -267,7 +267,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="../movies">Movies</a></li>
-                        <li><a href="add-movies">Add Movies</a></li>
+                        <li><a href="add-movie">Add Movies</a></li>
                         <li><a href="manage-movies">Manage Movies</a></li>
                     </ul>
                 </li>
@@ -291,7 +291,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="../tvshows">TV-Shows</a></li>
-                        <li><a href="add-tvshows">Add TV-Shows</a></li>
+                        <li><a href="add-tvshow">Add TV-Shows</a></li>
                         <li><a href="manage-tvshows">Manage TV-Shows</a></li>
                     </ul>
                 </li>

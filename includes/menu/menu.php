@@ -189,8 +189,8 @@
                     <?php if($_SESSION['user']['role'] == 'Admin') { ?>
                         <img class="rounded-circle header-profile-user" src="<?php echo 'admin/assets/images/admin/'.$log_userimage; ?>">
                         <span class="d-none d-xl-inline-block ml-1"><?php echo $log_username; ?></span>
-                    <?php }elseif($_SESSION['user']['role'] == 'Author') { ?>
-                        <img class="rounded-circle header-profile-user" src="<?php echo 'author/assets/images/author/'.$log_userimage; ?>">
+                    <?php }elseif($_SESSION['user']['role'] == 'Moderator') { ?>
+                        <img class="rounded-circle header-profile-user" src="<?php echo 'moderator/assets/images/moderator/'.$log_userimage; ?>">
                         <span class="d-none d-xl-inline-block ml-1"><?php echo $log_username; ?></span>
                     <?php }elseif($_SESSION['user']['role'] == 'User') { ?>
                         <img class="rounded-circle header-profile-user" src="<?php echo 'user/assets/images/user/'.$log_userimage; ?>">
@@ -213,8 +213,8 @@
 
                         <?php if($_SESSION['user']['role'] == 'Admin') { ?>
                             <a class="dropdown-item" href="admin/view-user.php?user=<?php echo $log_username; ?>"><i class="fa fa-user-alt mr-2"></i>Profile</a>
-                        <?php }elseif($_SESSION['user']['role'] == 'Author') { ?>
-                            <a class="dropdown-item" href="author/userprofile.php"><i class="fa fa-user-alt mr-2"></i>Profile</a>
+                        <?php }elseif($_SESSION['user']['role'] == 'Moderator') { ?>
+                            <a class="dropdown-item" href="moderator/userprofile.php"><i class="fa fa-user-alt mr-2"></i>Profile</a>
                         <?php }elseif($_SESSION['user']['role'] == 'User') { ?>
                             <a class="dropdown-item" href="user/user-profile.php"><i class="fa fa-user-alt mr-2"></i>Profile</a>
                         <?php } ?>
@@ -225,11 +225,11 @@
                     <?php  if (isset($_SESSION['user'])){ ?>
 
                         <?php if($_SESSION['user']['role'] == 'Admin') { ?>
-                            <a class="dropdown-item" href="admin/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
-                        <?php }elseif($_SESSION['user']['role'] == 'Author') { ?>
-                            <a class="dropdown-item" href="author/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                            <a class="dropdown-item" href="admin/"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                        <?php }elseif($_SESSION['user']['role'] == 'Moderator') { ?>
+                            <a class="dropdown-item" href="moderator/"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
                         <?php }elseif($_SESSION['user']['role'] == 'User') { ?>
-                            <a class="dropdown-item" href="user/index"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                            <a class="dropdown-item" href="user/"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
                         <?php } ?>
 
                     <?php } ?>
@@ -272,8 +272,8 @@
                     <?php if (isset($_SESSION['user'])): ?>
                         <?php if($_SESSION['user']['role'] == 'Admin'): ?>
                             <span>Admin</span>
-                        <?php elseif ($_SESSION['user']['role'] == 'Author'): ?>
-                            <span>Author</span>
+                        <?php elseif ($_SESSION['user']['role'] == 'Moderator'): ?>
+                            <span>Moderator</span>
                         <?php elseif ($_SESSION['user']['role'] == 'User'): ?>
                             <span>User</span>
                         <?php endif ?>
@@ -289,7 +289,7 @@
                                 <i class='bx bxs-user-account'></i>
                                 <span>Profile</span>
                             </a>
-                        <?php elseif ($_SESSION['user']['role'] == 'Author'): ?>
+                        <?php elseif ($_SESSION['user']['role'] == 'Moderator'): ?>
                             <a href="#" class=" waves-effect">
                                 <i class='bx bxs-user-account'></i>
                                 <span>Profile</span>
@@ -315,7 +315,7 @@
                                 <i class='bx bx-home-circle'></i>
                                 <span>Dashboard</span>
                             </a>
-                        <?php elseif ($_SESSION['user']['role'] == 'Author'): ?>
+                        <?php elseif ($_SESSION['user']['role'] == 'Moderator'): ?>
                             <a href="#" class=" waves-effect">
                                 <i class='bx bx-home-circle'></i>
                                 <span>Dashboard</span>

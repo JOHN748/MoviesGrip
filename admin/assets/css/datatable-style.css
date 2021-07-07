@@ -1,0 +1,102 @@
+a{
+	text-decoration: none;
+	color: white;
+}
+
+@media (max-width: 768px) {
+    .float-lc{
+    	float: none;
+	    display: flex;
+	    justify-content: center;
+	}
+	.float-rc{
+		float: none;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+
+@media (min-width: 769px) {
+    .float-lc {
+        float: left;
+    }
+    .float-rc {
+    	float: right;
+    }
+}
+
+
+/* Export Icons */
+
+.fa-copy{
+	color: #6C757D;
+}
+
+.fa-file-excel{
+	color: #026E39;
+}
+
+.fa-file-pdf{
+	color: #AD0B00;
+}
+
+.fa-file-csv{
+	color: #85BE28;
+}
+
+.fa-print{
+	color: #A392EB;	
+}
+
+/* Buttons CSS */
+
+.btn-copy, .btn-excel, .btn-pdf, .btn-csv, .btn-print, .btn-pdefault, .btn-pinfo, .btn-pdetails, .btn-pimages, .btn-paction, .btn-showall{
+	cursor: pointer !important;
+}
+
+.btn-create-users{
+	color: white;
+}
+
+/* Search Field CSS */
+
+.dataTables_filter {
+     display: none;
+}
+
+/* Page Length Filter CSS */
+
+div.dataTables_length{
+	float: left;
+	margin-top: 10px;
+}
+
+/* Page Length Info CSS */
+
+div.dataTables_info{
+	text-align: center !important;
+	margin-top: 10px;
+}
+
+/* Pagination CSS */
+
+ul.pagination{
+	margin-top: 10px !important;
+}
+
+ul.pagination li.paginate_button{
+	padding-left: 6px;
+}
+
+ul.pagination li.paginate_button a.page-link{ 
+	background-color: #6C757D;
+	color: white;
+	border: none;
+	border-radius: 4px;
+}
+
+ul.pagination li.paginate_button.page-item.active a.page-link{
+	background-color: #605F84;
+	color: white;
+}
