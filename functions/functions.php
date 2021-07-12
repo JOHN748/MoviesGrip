@@ -461,6 +461,165 @@ function add_movie(){
 }
 
 
+// Edit Movie
+
+if (isset($_GET['edit-movie'])) {
+
+	$movie = $_GET['edit-movie'];
+
+	global $db, $set_title, $set_image, $set_year, $set_genre, $set_language, $set_rating, $set_quality, 
+	$set_synopsis, $set_gallery_images, $set_slug;
+
+	$query = "SELECT * FROM movies WHERE slug = '$movie' ";
+	
+	$results = mysqli_query($db, $query);
+
+	$set_movie = mysqli_fetch_array($results);
+
+	$set_id 			= $set_movie['id'];
+	$set_title       	= $set_movie['title'];
+	$set_image 		 	= $set_movie['image'];
+	$set_year 		 	= $set_movie['year'];
+	$set_genre 	     	= $set_movie['genre'];
+	$set_language	    = $set_movie['language'];
+	$set_rating         = $set_movie['rating'];
+	$set_quality 	    = $set_movie['quality'];
+	$set_synopsis 	 	= $set_movie['synopsis'];
+	$set_gallery_images = $set_movie['gallery_image'];
+	$set_slug     		= $set_movie['slug'];
+
+}
+
+
+// Update Movie
+
+if (isset($_POST['update_movie'])) {
+	$id = $_POST['id'];
+	$delete_img = $_POST['delete-img'];
+	$delete_gimg = $_POST['delete-gimg'];
+	update_movie($id, $delete_img, $delete_gimg);
+}
+
+function update_movie($id, $delete_img, $delete_gimg){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$languages    = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$qualities    = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$slug 		  = $_POST['slug'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$slug = makeSlug($slug);
+
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM movies WHERE id!=$id AND title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "Movie with this name is already exists";
+		}
+	}
+
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM movies WHERE id!=$id AND slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Movie with this Slug is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM movies WHERE id!=$id AND image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	if(empty($title_err) && empty($slug_err) && empty($img_err)){
+
+		if(is_array($gallery_images)) { 
+
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
+	    Remove('../assets/images/movies/'.$title.'/');
+
+		$query = "UPDATE movies SET
+				title = '$title', genre = '$genre', language ='$language', rating ='$rating', quality = '$quality', year = '$year', synopsis = '$synopsis', slug = '$slug',
+				image = '$image', gallery_image = '$gallery_image', uploaded_by = '$uploaded_by', uploaded_on = now(), status = '$status' WHERE id = $id";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/movies/$title/")) {
+			    mkdir("../assets/images/movies/$title/");
+			}
+
+			move_uploaded_file($temp_name, "../assets/images/movies/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/movies/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="../assets/images/movies/$title/$delete_img";	
+			header('location: manage-movies.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Query Execution";
+				header('location: manage-movies.php');
+			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-movies.php');
+		}
+	}else{
+		$_SESSION['error'] = "Error in title_err";
+	}
+
+}
+
+
 // Publish & Unpublish Movie
 
 	if (isset($_POST['publish'])) {
@@ -509,8 +668,8 @@ function togglePublish($status)
 error_reporting(0);
 
 if (isset($_POST["multi-m-delete"])) {
-    
-	if (!empty($_POST['multi-m-delete'])) {
+
+	if(!empty($_POST['ids'])){
 	    if (count($_POST["ids"]) > 0 ) {
 
 	        $imgs = $_POST["imgs"];
@@ -526,11 +685,12 @@ if (isset($_POST["multi-m-delete"])) {
 	        }
 	    }
     }else{
-    	$_SESSION['error'] = "You need to select atleast one checkbox to delete!";
+    	$_SESSION['error'] = "You need to Select atleast one movie to delete";
     }
+
 }  
 
-// Single Delete Product
+// Single Delete Movie
 
 if(isset($_POST['single-m-delete'])){
     $delete_movie = $_POST['delete-movie'];
@@ -549,20 +709,6 @@ function movie_delete($delete_movie, $delete_image){
         $_SESSION['success'] ="Something went wrong, Try again";
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // ********** WEBSERIES ********** //
@@ -716,7 +862,6 @@ function add_series(){
 		header('location: manage-webseries.php');
 	}
 }
-
 
 
 // ********** TV-Shows ********** //

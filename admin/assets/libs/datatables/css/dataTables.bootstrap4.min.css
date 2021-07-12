@@ -205,3 +205,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:fir
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
     padding-right: 0;
 }
+
+.btn-copy, .btn-excel, .btn-pdf, .btn-csv, .btn-print, .btn-default, .btn-info, .btn-details, .btn-images, .btn-manage, .btn-showall{
+    cursor: pointer !important;
+}

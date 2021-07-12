@@ -1,5 +1,5 @@
 # 404 page
-#ErrorDocument 404 http://localhost/moviesgrip/404.php
+ErrorDocument 404 http://localhost/moviesgrip/404.php
 
 RewriteEngine On
 RewriteBase /moviesgrip/
@@ -22,5 +22,5 @@ RewriteRule ^tvshows/(.+)$ tvshow-template.php?id=$1 [L]
 # URL Rewrite Admin 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^admin/edit-movie/(.+)/?$ admin/edit-movie.php?id=$1 [L]
+RewriteRule ^admin/edit/(.+)/?$ admin/edit-movie.php?edit-movie=$1 [L]
 

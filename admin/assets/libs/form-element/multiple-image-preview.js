@@ -20,5 +20,6 @@ $(function() {
 
     $('#gallery_image').on('change', function() {
         imagesPreview(this, 'div.gallery_preview');
+        document.getElementById('gallery_prev').style.display = "none";
     });
 });

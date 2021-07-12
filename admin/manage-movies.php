@@ -54,7 +54,7 @@
 
                                             <div class="btn-group mr-2">
                                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-paper-plane"></i>&nbsp Export 
+                                                    <i class="fas fa-paper-plane"></i>
                                                 </button>
                                                 <div class="dropdown-menu" style="">
                                                     <a class="dropdown-item btn-copy">
@@ -77,7 +77,7 @@
 
                                             <div class="btn-group mr-2">
                                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-eye"></i>&nbsp Visibility 
+                                                    <i class="fas fa-eye"></i> 
                                                 </button>
                                                 <div class="dropdown-menu" style="">
                                                     <a class="dropdown-item btn-default">
@@ -113,10 +113,10 @@
 
                                             <input type="text" id="searchbox" class="form-control float-rc ml-3  mb-3" placeholder="Search Users.." style="width: auto;">
 
-                                            <button type="submit" name="multi-m-delete" class="btn btn-danger btn-md float-rc ml-3 mb-3" onClick="return confirm('Are you sure you want to delete?');" >Delete</button>
+                                            <button type="submit" name="multi-m-delete" class="btn btn-danger btn-md float-rc ml-3 mb-3" onClick="return confirm('Are you sure you want to delete?');" ><i class="fas fa-trash-alt"></i></button>
                                             
                                             <a href="add-movie.php" class="btn btn-danger btn-create-users float-rc mb-3">
-                                                <i class="fas fa-plus"></i>&nbsp Add Movie
+                                                <i class="fas fa-plus"></i>
                                             </a>
 
                                         </div>
@@ -221,7 +221,7 @@
                                                 <i class="fas fa-eye"></i>
                                             </a>
 
-                                            <a href="edit-movie/<?php echo $manage_movie['slug'] ?>" 
+                                            <a href="edit/<?php echo $manage_movie['slug'] ?>" 
                                             class="mr-3">
                                                 <i class="fas fa-pencil-alt text-success"></i>
                                             </a>
@@ -283,7 +283,7 @@
 
 <!-- Datatable JS -->
 <?php include 'includes/footer/datatables-scripts.php'; ?>
-<script src="assets/libs/datatables/js/datatable-product.js"></script>
+<script src="assets/libs/datatables/js/datatable-movie.js"></script>
 
 </body>
 </html>
