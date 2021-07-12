@@ -467,8 +467,8 @@ if (isset($_GET['edit-movie'])) {
 
 	$movie = $_GET['edit-movie'];
 
-	global $db, $set_title, $set_image, $set_year, $set_genre, $set_language, $set_rating, $set_quality, 
-	$set_synopsis, $set_gallery_images, $set_slug;
+	global $db, $set_title, $set_image, $set_year, $set_genre, $set_language,
+	$set_rating, $set_quality, $set_synopsis, $set_gallery_images, $set_slug;
 
 	$query = "SELECT * FROM movies WHERE slug = '$movie' ";
 	
@@ -476,17 +476,17 @@ if (isset($_GET['edit-movie'])) {
 
 	$set_movie = mysqli_fetch_array($results);
 
-	$set_id 			= $set_movie['id'];
-	$set_title       	= $set_movie['title'];
-	$set_image 		 	= $set_movie['image'];
-	$set_year 		 	= $set_movie['year'];
-	$set_genre 	     	= $set_movie['genre'];
-	$set_language	    = $set_movie['language'];
+	$set_id 			  = $set_movie['id'];
+	$set_title       	  = $set_movie['title'];
+	$set_image 		  = $set_movie['image'];
+	$set_year 	      = $set_movie['year'];
+	$set_genre 	      = $set_movie['genre'];
+	$set_language	      = $set_movie['language'];
 	$set_rating         = $set_movie['rating'];
-	$set_quality 	    = $set_movie['quality'];
-	$set_synopsis 	 	= $set_movie['synopsis'];
+	$set_quality 	      = $set_movie['quality'];
+	$set_synopsis 	  = $set_movie['synopsis'];
 	$set_gallery_images = $set_movie['gallery_image'];
-	$set_slug     		= $set_movie['slug'];
+	$set_slug     	  = $set_movie['slug'];
 
 }
 
@@ -602,7 +602,7 @@ function update_movie($id, $delete_img, $delete_gimg){
 			   }
 			}  
 			
-			$_SESSION['success'] ="../assets/images/movies/$title/$delete_img";	
+			$_SESSION['success'] ="Movie has been successfully Updated!";	
 			header('location: manage-movies.php');
 
 			}else{
@@ -614,7 +614,7 @@ function update_movie($id, $delete_img, $delete_gimg){
 		header('location: manage-movies.php');
 		}
 	}else{
-		$_SESSION['error'] = "Error in title_err";
+		$_SESSION['error'] = "Error in Header Function";
 	}
 
 }
@@ -622,20 +622,20 @@ function update_movie($id, $delete_img, $delete_gimg){
 
 // Publish & Unpublish Movie
 
-	if (isset($_POST['publish'])) {
+	if (isset($_POST['publish_movie'])) {
 		$status = $_POST['status'];
-		togglePublish($status);
+		togglePublishMovie($status);
 		$_SESSION['success'] = $status;
-	}else if (isset($_POST['unpublish'])) {
+	}else if (isset($_POST['unpublish_movie'])) {
 		$status = $_POST['status'];
-		toggleUnpublish($status);
+		toggleUnpublishMovie($status);
 		$_SESSION['success'] = $status;
 	}
 
 
 // Publish Movie
 
-function toggleUnpublish($status)
+function toggleUnpublishMovie($status)
 {
 	global $db;
 	$sql = "UPDATE movies SET status = 'Inactive' WHERE id = $status";
@@ -650,7 +650,7 @@ function toggleUnpublish($status)
 
 // Unpublish Movie
 
-function togglePublish($status)
+function togglePublishMovie($status)
 {
 	global $db;
 	$sql = "UPDATE movies SET status= 'Active' WHERE id = $status";
@@ -737,7 +737,31 @@ function series_details(){
 }
 
 
-// Add Series
+// Manage WebSeries 
+
+function manage_webseries(){
+
+	global $db;
+	
+	$query = "SELECT * FROM webseries ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$manage_webseries = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($manage_webseries as $manage_series) {
+
+		array_push($getdetails, $manage_series);
+
+	}
+
+	return $getdetails;
+} 
+
+
+// Add WebSeries
 
 if (isset($_POST['add_series'])) {
 	add_series();
@@ -861,6 +885,256 @@ function add_series(){
 		$_SESSION['error'] ="Error occured in Header Function";
 		header('location: manage-webseries.php');
 	}
+}
+
+
+// Edit WebSeries
+
+if (isset($_GET['edit-webseries'])) {
+
+	$series = $_GET['edit-webseries'];
+
+	global $db, $set_title, $set_image, $set_year, $set_genre, $set_language, $set_rating, $set_quality, 
+	$set_synopsis, $set_gallery_images, $set_slug;
+
+	$query = "SELECT * FROM webseries WHERE slug = '$series' ";
+	
+	$results = mysqli_query($db, $query);
+
+	$set_series = mysqli_fetch_array($results);
+
+	$set_id 			= $set_series['id'];
+	$set_title       	= $set_series['title'];
+	$set_image 		 	= $set_series['image'];
+	$set_year 		 	= $set_series['year'];
+	$set_genre 	     	= $set_series['genre'];
+	$set_language	    = $set_series['language'];
+	$set_rating         = $set_series['rating'];
+	$set_quality 	    = $set_series['quality'];
+	$set_synopsis 	 	= $set_series['synopsis'];
+	$set_gallery_images = $set_series['gallery_image'];
+	$set_slug     		= $set_series['slug'];
+
+}
+
+
+// Update WebSeries
+
+if (isset($_POST['update_series'])) {
+	$id = $_POST['id'];
+	$delete_img = $_POST['delete-img'];
+	$delete_gimg = $_POST['delete-gimg'];
+	update_series($id, $delete_img, $delete_gimg);
+}
+
+function update_series($id, $delete_img, $delete_gimg){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$languages    = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$qualities    = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$slug 		  = $_POST['slug'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$slug = makeSlug($slug);
+
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM webseries WHERE id!=$id AND title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "Webseries with this name is already exists";
+		}
+	}
+
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM webseries WHERE id!=$id AND slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Webseries with this Slug is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM webseries WHERE id!=$id AND image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	if(empty($title_err) && empty($slug_err) && empty($img_err)){
+
+		if(is_array($gallery_images)) { 
+
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
+	    Remove('../assets/images/webseries/'.$title.'/');
+
+		$query = "UPDATE webseries SET
+				title = '$title', genre = '$genre', language ='$language', rating ='$rating', quality = '$quality', year = '$year', synopsis = '$synopsis', slug = '$slug',
+				image = '$image', gallery_image = '$gallery_image', uploaded_by = '$uploaded_by', uploaded_on = now(), status = '$status' WHERE id = $id";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/webseries/$title/")) {
+			    mkdir("../assets/images/webseries/$title/");
+			}
+
+			move_uploaded_file($temp_name, "../assets/images/webseries/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/webseries/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="Webseries has been successfully Updated!";	
+			header('location: manage-webseries.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Query Execution";
+				header('location: manage-webseries.php');
+			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-webseries.php');
+		}
+	}else{
+		$_SESSION['error'] = "Error in Header Function";
+	}
+
+}
+
+
+// Publish & Unpublish WebSeries
+
+	if (isset($_POST['publish_series'])) {
+		$status = $_POST['status'];
+		togglePublishSeries($status);
+		$_SESSION['success'] = $status;
+	}else if (isset($_POST['unpublish_series'])) {
+		$status = $_POST['status'];
+		toggleUnpublishSeries($status);
+		$_SESSION['success'] = $status;
+	}
+
+
+// Publish WebSeries
+
+function toggleUnpublishSeries($status)
+{
+	global $db;
+	$sql = "UPDATE webseries SET status = 'Inactive' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'Series Successfully Unpublished';
+		header("location: manage-webseries.php");
+		exit(0);
+	}
+}
+
+
+// Unpublish WebSeries
+
+function togglePublishSeries($status)
+{
+	global $db;
+	$sql = "UPDATE webseries SET status= 'Active' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'Series Successfully Published';
+		header("location: manage-webseries.php");
+		exit(0);
+	}
+}
+
+
+// Multi Delete WebSeries
+
+error_reporting(0);
+
+if (isset($_POST["multi-s-delete"])) {
+
+	if(!empty($_POST['ids'])){
+	    if (count($_POST["ids"]) > 0 ) {
+
+	        $imgs = $_POST["imgs"];
+	        $all  = implode(",", $_POST["ids"]);
+
+	        if(mysqli_query($db,"DELETE FROM webseries WHERE id in ($all)")) {
+	        	foreach ($imgs as $img) {
+	        		Remove('../assets/images/webseries/'.$img.'/');
+	        	}
+	            $_SESSION['success'] ="Series has been deleted successfully";
+	        } else {
+	            $_SESSION['success'] ="Error while deleting. Please Try again."; 
+	        }
+	    }
+    }else{
+    	$_SESSION['error'] = "You need to Select atleast one movie to delete";
+    }
+
+}  
+
+// Single Delete WebSeries
+
+if(isset($_POST['single-s-delete'])){
+    $delete_series = $_POST['delete-series'];
+    $delete_image = $_POST['delete-image'];
+    series_delete($delete_series, $delete_image);
+}
+
+function series_delete($delete_series, $delete_image){
+    
+    global $db;
+
+    if(mysqli_query($db, "DELETE FROM webseries WHERE id = $delete_series")){
+    	Remove('../assets/images/webseries/'.$delete_image.'/');
+        $_SESSION['success'] = "Webseries has been deleted successfully";
+    }else{
+        $_SESSION['error'] ="Something went wrong, Try again";
+    }
 }
 
 

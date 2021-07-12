@@ -22,5 +22,7 @@ RewriteRule ^tvshows/(.+)$ tvshow-template.php?id=$1 [L]
 # URL Rewrite Admin 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^admin/edit/(.+)/?$ admin/edit-movie.php?edit-movie=$1 [L]
+RewriteRule ^admin/edit-movies/(.+)/?$ admin/edit-movie.php?edit-movie=$1 [L]
+RewriteRule ^admin/edit-series/(.+)/?$ admin/edit-webseries.php?edit-webseries=$1 [L]
+RewriteRule ^admin/edit-shows/(.+)/?$ admin/edit-tvshows.php?edit-tvshows=$1 [L]
 

@@ -205,11 +205,11 @@
                                             <?php $status = $manage_movie['status']; ?>
 
                                             <?php if ($status == "Active"): ?>
-                                            <button class="btn" type="submit" name="unpublish">
+                                            <button class="btn" type="submit" name="unpublish_movie">
                                                 <i class="fas fa-check text-success"></i>
                                             </button>
                                             <?php elseif ($status == "Inactive"): ?>
-                                                    <button type="submit" name="publish" class="btn">
+                                                    <button type="submit" name="publish_movie" class="btn">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                             <?php endif; ?>
@@ -221,7 +221,7 @@
                                                 <i class="fas fa-eye"></i>
                                             </a>
 
-                                            <a href="edit/<?php echo $manage_movie['slug'] ?>" 
+                                            <a href="edit-movies/<?php echo $manage_movie['slug'] ?>" 
                                             class="mr-3">
                                                 <i class="fas fa-pencil-alt text-success"></i>
                                             </a>
@@ -235,18 +235,6 @@
                                         </td>
 
                                     </form>
-
-
-
-
-
-
-
-
-
-
-
-
 
                                         </tr>
 
@@ -283,7 +271,7 @@
 
 <!-- Datatable JS -->
 <?php include 'includes/footer/datatables-scripts.php'; ?>
-<script src="assets/libs/datatables/js/datatable-movie.js"></script>
+<script src="assets/libs/datatables/js/datatable-manage.js"></script>
 
 </body>
 </html>
