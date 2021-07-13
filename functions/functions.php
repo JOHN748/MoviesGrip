@@ -329,6 +329,34 @@ function manage_sliders(){
 } 
 
 
+// Latest Releases
+
+function latest_details(){
+    
+    global $db;
+    
+    $query = "SELECT * FROM ( ( SELECT * FROM movies WHERE status = 'Active') 
+	UNION 
+	(SELECT * FROM webseries WHERE status = 'Active') 
+	UNION 
+	(SELECT * FROM tvshows WHERE status = 'Active') ) a ORDER BY uploaded_on DESC LIMIT 6";
+    
+    $run_query = mysqli_query($db, $query);
+    
+    $latest_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+    
+    $getdetails = array();
+    
+  	foreach ($latest_details as $latest_detail) {
+    
+        array_push($getdetails, $latest_detail);
+    
+    }
+
+    return $getdetails;
+} 
+
+
 // ********** MOVIES ********** //
 
 // Movies 
@@ -381,7 +409,7 @@ function manage_movies(){
 
 // Add Movie
 
-$title = $genre = $language = $rating = $quality = $year = $synopsis = $slug = $image = $gallery_images = 
+$title = $category = $genre = $language = $rating = $quality = $year = $synopsis = $slug = $image = $gallery_images = 
 $uploaded_by = $status = $languages = $qualities = "";
 
 $title_err = $slug_err = $img_err = $gimg_err = $err = "";
@@ -392,7 +420,7 @@ if (isset($_POST['add_movie'])) {
 
 function add_movie(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	global $db, $title, $category, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
 	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
@@ -405,6 +433,7 @@ function add_movie(){
 	$slug 		  = $_POST['slug'];
 	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
+	$category	  = 'movie';
 	
 	$slug = makeSlug($slug);
 
@@ -469,10 +498,10 @@ function add_movie(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO movies (title, genre, language, rating, quality, year, synopsis, slug,
+		$query = "INSERT INTO movies (title, category, genre, language, rating, quality, year, synopsis, slug,
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
+				  VALUES('$title', '$category', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){
@@ -819,7 +848,7 @@ if (isset($_POST['add_series'])) {
 
 function add_series(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	global $db, $title, $category, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
 	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
@@ -832,6 +861,7 @@ function add_series(){
 	$slug 		  = $_POST['slug'];
  	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
+	$category     = 'webseries';
 
 	$slug = makeSlug($slug);
 	
@@ -896,10 +926,10 @@ function add_series(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO webseries (title, genre, language, rating, quality, year, synopsis, slug, 
+		$query = "INSERT INTO webseries (title, category, genre, language, rating, quality, year, synopsis, slug, 
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
+				  VALUES('$title', '$category', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){
@@ -1246,7 +1276,7 @@ if (isset($_POST['add_show'])) {
 
 function add_show(){
 	
-	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	global $db, $title, $category, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
 	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
 
 	$title 		  = $_POST['title'];
@@ -1259,6 +1289,7 @@ function add_show(){
 	$slug 		  = $_POST['slug'];
 	$uploaded_by  = $_SESSION['user']['username'];
 	$status 	  = $_POST['check'];
+	$category	  = 'tvshow';
 
 	$slug = makeSlug($slug);
 	
@@ -1323,10 +1354,10 @@ function add_show(){
 	    $language = implode(",", $languages);       
 	    $quality 	   = implode(',', $qualities);
 
-		$query = "INSERT INTO tvshows (title, genre, language, rating, quality, year, synopsis, slug,
+		$query = "INSERT INTO tvshows (title, category, genre, language, rating, quality, year, synopsis, slug,
 		          image, gallery_image, uploaded_by, uploaded_on, status) 
 				  
-				  VALUES('$title', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
+				  VALUES('$title', '$category', '$genre', '$language', '$rating', '$quality', '$year', '$synopsis', '$slug',
 				  '$image', '$gallery_image', '$uploaded_by', now(), '$status')";
 
 		if(mysqli_query($db, $query)){
