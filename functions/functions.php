@@ -681,7 +681,7 @@ if (isset($_POST["multi-m-delete"])) {
 	        	}
 	            $_SESSION['success'] ="Movie has been deleted successfully";
 	        } else {
-	            $_SESSION['success'] ="Error while deleting. Please Try again."; 
+	            $_SESSION['error'] ="Error while deleting. Please Try again."; 
 	        }
 	    }
     }else{
@@ -1108,11 +1108,11 @@ if (isset($_POST["multi-s-delete"])) {
 	        	}
 	            $_SESSION['success'] ="Series has been deleted successfully";
 	        } else {
-	            $_SESSION['success'] ="Error while deleting. Please Try again."; 
+	            $_SESSION['error'] ="Error while deleting. Please Try again."; 
 	        }
 	    }
     }else{
-    	$_SESSION['error'] = "You need to Select atleast one movie to delete";
+    	$_SESSION['error'] = "You need to Select atleast one Webseries to delete";
     }
 
 }  
@@ -1162,6 +1162,30 @@ function show_details(){
 
 	return $getdetails;
 }
+
+
+// Manage TV-Shows 
+
+function manage_tvshows(){
+
+	global $db;
+	
+	$query = "SELECT * FROM tvshows ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$manage_tvshows = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($manage_tvshows as $manage_tvshow) {
+
+		array_push($getdetails, $manage_tvshow);
+
+	}
+
+	return $getdetails;
+} 
 
 
 // Add TV-Show
@@ -1291,6 +1315,254 @@ function add_show(){
 }
 
 
+// Edit TV-Show
+
+if (isset($_GET['edit-tvshow'])) {
+
+	$tvshow = $_GET['edit-tvshow'];
+
+	global $db, $set_title, $set_image, $set_year, $set_genre, $set_language, $set_rating, $set_quality, 
+	$set_synopsis, $set_gallery_images, $set_slug;
+
+	$query = "SELECT * FROM tvshows WHERE slug = '$tvshow' ";
+	
+	$results = mysqli_query($db, $query);
+
+	$set_tvshow = mysqli_fetch_array($results);
+
+	$set_id 			= $set_tvshow['id'];
+	$set_title       	= $set_tvshow['title'];
+	$set_image 		 	= $set_tvshow['image'];
+	$set_year 		 	= $set_tvshow['year'];
+	$set_genre 	     	= $set_tvshow['genre'];
+	$set_language	    = $set_tvshow['language'];
+	$set_rating         = $set_tvshow['rating'];
+	$set_quality 	    = $set_tvshow['quality'];
+	$set_synopsis 	 	= $set_tvshow['synopsis'];
+	$set_gallery_images = $set_tvshow['gallery_image'];
+	$set_slug     		= $set_tvshow['slug'];
+
+}
+
+
+// Update TV-Show
+
+if (isset($_POST['update_tvshow'])) {
+	$id = $_POST['id'];
+	$delete_img = $_POST['delete-img'];
+	$delete_gimg = $_POST['delete-gimg'];
+	update_tvshow($id, $delete_img, $delete_gimg);
+}
+
+function update_tvshow($id, $delete_img, $delete_gimg){
+	
+	global $db, $title, $genre, $language, $rating, $quality, $year, $synopsis, $slug, $image, $gallery_images, 
+	$uploaded_by, $status, $languages, $qualities, $title_err, $slug_err, $img_err, $gimg_err, $err;
+
+	$title 		  = $_POST['title'];
+	$genre  	  = $_POST['genre'];
+	$languages    = $_POST['language'];
+	$rating 	  = $_POST['rating'];
+	$qualities    = $_POST['quality'];
+	$year 		  = $_POST['year'];
+	$synopsis 	  = $_POST['synopsis'];
+	$slug 		  = $_POST['slug'];
+	$uploaded_by  = $_SESSION['user']['username'];
+	$status 	  = $_POST['check'];
+	
+	$slug = makeSlug($slug);
+
+	$image  =  $_FILES['image']['name'];
+	$temp_name =  $_FILES['image']['tmp_name'];
+
+	$gallery_images = array_filter($_FILES['gallery_image']['name']); 
+	$total_count = count($_FILES['gallery_image']['name']);
+
+	$imagetype = array(image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG),
+    image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_BMP));
+
+	for( $i=0 ; $i < $total_count ; $i++ ) {
+        if (in_array($_FILES['gallery_image']['type'][$i], $imagetype)) {
+        	$gimg_er = "";
+        }else{
+        	$gimg_er = "true";
+			$gimg_err = "Only JPEG, JPG and PNG Images are Allowed";        	
+        }
+	}
+
+	if (!empty($title)) {
+		$query = "SELECT * FROM tvshows WHERE id!=$id AND title='$title' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$title_err = "TV-Show with this name is already exists";
+		}
+	}
+
+
+	if (!empty($slug)) {
+		$query = "SELECT * FROM tvshows WHERE id!=$id AND slug='$slug' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$slug_err = "Tv-Show with this Slug is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		$query = "SELECT * FROM tvshows WHERE id!=$id AND image='$image' LIMIT 1";
+		$results = mysqli_query($db, $query);
+		if (mysqli_num_rows($results) == 1) { 
+			$img_err = "Image is already exists";
+		}
+	}
+
+	if (!empty($image)) {
+		if ($_FILES['image']['type'] == "image/jpeg" || $_FILES['image']['type'] == "image/jpg" || 
+			$_FILES['image']['type'] == "image/png") {
+			$img_er = false;
+		}else{
+			$img_er = true;
+			$img_err = "Only JPEG, JPG and PNG Images are Allowed";
+		}
+	}
+
+	if(empty($title_err) && empty($slug_err) && empty($img_err)){
+
+		if(is_array($gallery_images)) { 
+
+	    $gallery_image = implode(',',$gallery_images);
+	    $language = implode(",", $languages);       
+	    $quality 	   = implode(',', $qualities);
+	    Remove('../assets/images/tvshows/'.$title.'/');
+
+		$query = "UPDATE tvshows SET
+				title = '$title', genre = '$genre', language ='$language', rating ='$rating', quality = '$quality', year = '$year', synopsis = '$synopsis', slug = '$slug',
+				image = '$image', gallery_image = '$gallery_image', uploaded_by = '$uploaded_by', uploaded_on = now(), status = '$status' WHERE id = $id";
+
+		if(mysqli_query($db, $query)){
+			$err = $mysqli -> error;
+			if(!is_dir("../assets/images/tvshows/$title/")) {
+			    mkdir("../assets/images/tvshows/$title/");
+			}
+
+			move_uploaded_file($temp_name, "../assets/images/tvshows/$title/$image");
+			
+			for( $i=0 ; $i < $total_count ; $i++ ) {
+
+			   $tmpFilePath = $_FILES['gallery_image']['tmp_name'][$i];
+			   if ($tmpFilePath != ""){
+			      $newFilePath = "../assets/images/tvshows/$title/" . $_FILES['gallery_image']['name'][$i];
+
+			      move_uploaded_file($tmpFilePath, $newFilePath);
+			   }
+			}  
+			
+			$_SESSION['success'] ="TV-Show has been successfully Updated!";	
+			header('location: manage-tvshows.php');
+
+			}else{
+				$_SESSION['error'] ="Error occured in Query Execution";
+				header('location: manage-tvshows.php');
+			}
+		}else{
+		$_SESSION['error'] ="Error occured in Array Function";
+		header('location: manage-tvshows.php');
+		}
+	}else{
+		$_SESSION['error'] = "Error in Header Function";
+	}
+
+}
+
+
+// Publish & Unpublish TV-Show
+
+	if (isset($_POST['publish_tvshow'])) {
+		$status = $_POST['status'];
+		togglePublishTvshow($status);
+		$_SESSION['success'] = $status;
+	}else if (isset($_POST['unpublish_tvshow'])) {
+		$status = $_POST['status'];
+		toggleUnpublishTvshow($status);
+		$_SESSION['success'] = $status;
+	}
+
+
+// Publish TV-Show
+
+function toggleUnpublishTvshow($status)
+{
+	global $db;
+	$sql = "UPDATE tvshows SET status = 'Inactive' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'TV-Show Successfully Unpublished';
+		header("location: manage-tvshows.php");
+		exit(0);
+	}
+}
+
+
+// Unpublish TV-Show
+
+function togglePublishTvshow($status)
+{
+	global $db;
+	$sql = "UPDATE tvshows SET status= 'Active' WHERE id = $status";
+	
+	if (mysqli_query($db, $sql)) {
+		$_SESSION['success'] = 'TV-Show Successfully Published';
+		header("location: manage-tvshows.php");
+		exit(0);
+	}
+}
+
+
+// Multi Delete TV-Show
+
+error_reporting(0);
+
+if (isset($_POST["multi-t-delete"])) {
+
+	if(!empty($_POST['ids'])){
+	    if (count($_POST["ids"]) > 0 ) {
+
+	        $imgs = $_POST["imgs"];
+	        $all  = implode(",", $_POST["ids"]);
+
+	        if(mysqli_query($db,"DELETE FROM tvshows WHERE id in ($all)")) {
+	        	foreach ($imgs as $img) {
+	        		Remove('../assets/images/tvshows/'.$img.'/');
+	        	}
+	            $_SESSION['success'] ="TV-Show has been deleted successfully";
+	        } else {
+	            $_SESSION['error'] ="Error while deleting. Please Try again."; 
+	        }
+	    }
+    }else{
+    	$_SESSION['error'] = "You need to Select atleast one TV-Show to delete";
+    }
+
+}  
+
+// Single Delete TV-Show
+
+if(isset($_POST['single-t-delete'])){
+    $delete_tvshow = $_POST['delete-tvshow'];
+    $delete_image = $_POST['delete-image'];
+    tvshow_delete($delete_tvshow, $delete_image);
+}
+
+function tvshow_delete($delete_tvshow, $delete_image){
+    
+    global $db;
+
+    if(mysqli_query($db, "DELETE FROM tvshows WHERE id = $delete_tvshow")){
+    	Remove('../assets/images/tvshows/'.$delete_image.'/');
+        $_SESSION['success'] = "TV-Show has been deleted successfully";
+    }else{
+        $_SESSION['error'] ="Something went wrong, Try again";
+    }
+}
 
 
 ?>

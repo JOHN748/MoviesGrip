@@ -89,8 +89,8 @@
                                     <div class="col-md-10">
                             
                                         <div class="form-group mt-3 mb-4">
-                                            <label class=" form-control-label">Movie Name</label>
-                                            <input type="text" name="title" placeholder="Enter the Movie Name" class="form-control" value="<?php echo $set_title; ?>" required>
+                                            <label class=" form-control-label">Series Name</label>
+                                            <input type="text" name="title" placeholder="Enter the Series Name" class="form-control" value="<?php echo $set_title; ?>" required>
                                             <span class="text-danger"><?php echo $title_err; ?></span>
                                         </div>
 
@@ -139,7 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body overflow-hidden">
-                                                <h5 class="font-size-16 mb-1">Movie Info</h5>
+                                                <h5 class="font-size-16 mb-1">Series Info</h5>
                                             </div>
                                         </div>
                                     </div>
