@@ -83,7 +83,7 @@
                                     
                                 <div class="row mt-2">
                                     <div class="col-md-2 text-center">
-                                        <img id="preview-image" class="img-prev rounded" src="#" alt="Upload" onerror=this.src="../assets/images/tvshows/no_image.png" />
+                                        <img id="preview-image" class="img-prev rounded" src="#" alt="Upload" onerror=this.src="../assets/images/tvshows/not_found.png" />
                                     </div>
                                     <div class="col-md-10">
                             

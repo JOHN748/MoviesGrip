@@ -205,6 +205,31 @@ function loggedin_user(){
 }
     
 
+// ********** ESSENTIAL FUNCTIONS ********* //
+
+// Remove Directory
+
+function Remove($dir) {
+    $structure = glob(rtrim($dir, "/").'/*');
+    if (is_array($structure)) {
+        foreach($structure as $file) {
+            if (is_dir($file)) Remove($file);
+            elseif (is_file($file)) unlink($file);
+        }
+    }
+    rmdir($dir);
+}
+
+
+// Make Slug
+
+function makeSlug(String $string){
+	$string = strtolower($string);
+	$slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+	return $slug;
+}
+
+
 // ********** SECTIONS MANAGEMENT ********** //
 
 // Section Details
@@ -254,29 +279,54 @@ $genres 			= $section_detail[6]['status'];
 $languages 			= $section_detail[7]['status'];
 
 
-// ********** ESSENTIAL FUNCTIONS ********* //
+// ********** SlIDERS ********* //
 
-// Remove Directory
+// Sliders
 
-function Remove($dir) {
-    $structure = glob(rtrim($dir, "/").'/*');
-    if (is_array($structure)) {
-        foreach($structure as $file) {
-            if (is_dir($file)) Remove($file);
-            elseif (is_file($file)) unlink($file);
-        }
-    }
-    rmdir($dir);
+function slider_details(){
+
+	global $db;
+	
+	$query = "SELECT * FROM slider WHERE status = 'Active' ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$slider_details = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($slider_details as $slider_detail) {
+
+		array_push($getdetails, $slider_detail);
+
+	}
+
+	return $getdetails;
 }
 
 
-// Make Slug
+// Manage Sliders 
 
-function makeSlug(String $string){
-	$string = strtolower($string);
-	$slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
-	return $slug;
-}
+function manage_sliders(){
+
+	global $db;
+	
+	$query = "SELECT * FROM sliders ORDER BY id DESC";
+	
+	$run_query = mysqli_query($db, $query);
+	
+	$manage_sliders = mysqli_fetch_all($run_query, MYSQLI_ASSOC);
+
+	$getdetails = array();
+
+	foreach ($manage_sliders as $manage_slider) {
+
+		array_push($getdetails, $manage_slider);
+
+	}
+
+	return $getdetails;
+} 
 
 
 // ********** MOVIES ********** //

@@ -3,6 +3,9 @@
 <!-- Session -->
 <?php include ('includes/session.php') ?>
 <!-- Fetch from Database -->
+<?php $movie_details = movie_details(); ?>
+<?php $series_details = series_details(); ?>
+<?php $show_details = show_details(); ?>
 
 <!-- HTML Start -->
 <!DOCTYPE html>
