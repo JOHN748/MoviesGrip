@@ -335,11 +335,11 @@ function latest_details(){
     
     global $db;
     
-    $query = "SELECT * FROM ( ( SELECT * FROM movies WHERE status = 'Active') 
-	UNION 
-	(SELECT * FROM webseries WHERE status = 'Active') 
-	UNION 
-	(SELECT * FROM tvshows WHERE status = 'Active') ) a ORDER BY uploaded_on DESC LIMIT 6";
+    $query = "SELECT * FROM 
+             (SELECT * FROM movies WHERE status = 'Active'  
+                UNION SELECT * FROM webseries WHERE status = 'Active' 
+                UNION SELECT * FROM tvshows WHERE status = 'Active') 
+             	A ORDER BY uploaded_on DESC LIMIT 6";
     
     $run_query = mysqli_query($db, $query);
     
