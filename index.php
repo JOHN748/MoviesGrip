@@ -15,7 +15,7 @@
 <!-- Head Section -->
 <head>
     <!-- Website Title -->
-    <title>MovieGrip</title>
+    <title>MoviesGrip</title>
     <!-- Meta Tags -->
     <?php include 'includes/header/meta-tags.php'; ?>
     <!-- Default CSS -->
